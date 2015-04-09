@@ -15,10 +15,14 @@ window.onload = (function genie() {
 		for( var _key in target ){
 			rows+=1;
 		}
-		console.log('The document has ' + rows + ' rows.[experimental mod]');
+		console.log('The document has ' + rows + ' rows.[experimental mode. If your document doesnt have an explicit doctype rule, you will get a +1 value for rows.]');
 	})(document.documentElement.outerHTML, document.querySelector('a'));
   
 
+// check if the current document has a lang defined
+	if( !document.documentElement.getAttribute('lang') ){ console.log('You should specify a lang attribute for your document content. e.g. <html lang="en">'); }
+	
+	
 //************************************ HEAD	
 //********************************** check for head and body elements, throw a warning if they are unset
   if( !_head ){ 
