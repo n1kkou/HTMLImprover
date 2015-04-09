@@ -69,13 +69,15 @@ window.onload = (function genie() {
 //************************************ check images
   (function scanImages(){
     var _images = document.getElementsByTagName('img'),
-        i,
-				j = 0,
-				k = 0,
-				l = 0,
+        i = j = k = l = 0,
         elems = _images.length;
     
-    for(i=0; i<elems; i++){
+    for(i; i<elems; i++){
+			var imgKeywords = [],
+					imgSrc = [],
+					x = 0,
+					y = 0,
+					matches = [];
       // check if images have ALT text
       if( !_images[i].getAttribute('alt') ){
 				j++;
@@ -90,6 +92,19 @@ window.onload = (function genie() {
       if( !_images[i].getAttribute('height') ){
 				l++;
       }
+			
+			if( _images[i].getAttribute('src') ){
+				imgSrc.push(_images[i].getAttribute('src').split('/'));
+			}
+			
+			if( _images[i].getAttribute('alt') ){
+				imgKeywords.push(_images[i].getAttribute('alt').split(' '));	
+			}
+		
+			if( imgSrc.length && imgKeywords.length ){
+				// check content matches
+			}
+			
     }
 		
 		k ? console.log('Detected ' + k + ' images which need an WIDTH value.'): '';
@@ -152,7 +167,9 @@ window.onload = (function genie() {
     }
   })();
   
-  
+	
+	
+	
 	
 // universal element check[in progress]
 	/*
