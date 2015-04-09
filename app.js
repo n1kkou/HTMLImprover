@@ -54,10 +54,10 @@ window.onload = (function genie() {
     
     for(i=0; i<args; i++){
       if( metaSourceValues.indexOf(meta[i]) === -1 ){          
-        console.log(meta[i].toUpperCase() + ' meta is not declared.');
+        console.log('meta tag ' + meta[i].toUpperCase() + ' meta is not declared.');
       }else{ 
 				if( !_head.querySelector('[name="' + meta[i] + '"]').getAttribute('content') ){
-					console.log(meta[i].toUpperCase() + ' exists but has no text content.');
+					console.log('meta tag ' + meta[i].toUpperCase() + ' exists but has no content.');
 				}
 			}
     }
@@ -70,24 +70,31 @@ window.onload = (function genie() {
   (function scanImages(){
     var _images = document.getElementsByTagName('img'),
         i,
+				j = 0,
+				k = 0,
+				l = 0,
         elems = _images.length;
     
     for(i=0; i<elems; i++){
       // check if images have ALT text
       if( !_images[i].getAttribute('alt') ){
-        console.log('The image with the following SRC attribute ' + _images[i].getAttribute('src') + ' should have an ALT description.');
+				j++;
       }
       
       // check if images have inline WIDTH attribute
       if( !_images[i].getAttribute('width') ){
-        console.log('The image with the following SRC attribute ' + _images[i].getAttribute('src') + ' should have a WIDTH attribute.');
+				k++;
       }
       
       // check if images have inline HEIGHT attribute
       if( !_images[i].getAttribute('height') ){
-        console.log('The image with the following SRC attribute ' + _images[i].getAttribute('src') + ' should have a HEIGHT attribute.');
+				l++;
       }
     }
+		
+		k ? console.log('Detected ' + k + ' images which need an WIDTH value.'): '';
+		l ? console.log('Detected ' + l + ' images which need an HEIGHT value.'): '';
+		j ? console.log('Detected ' + j + ' images which need an ALT description.') : '';
     
   })();
   
@@ -96,6 +103,7 @@ window.onload = (function genie() {
   (function scanAnchors(){
     var _anchors = document.getElementsByTagName('a'),
         i,
+				j = 0,
         elems = _anchors.length,
         hyp = [],
 				missingHref = 0,
@@ -106,11 +114,11 @@ window.onload = (function genie() {
     for(i=0; i<elems; i++){
       var loc = _anchors[i].getAttribute('href') || 'nohref';
       if( !_anchors[i].getAttribute('title') ){
-        console.log('The anchor with the following href location ' + _anchors[i] + ' should have a TITLE attribute.');
+				j++;
       }
 
       if( loc.indexOf('-') !== -1 && loc.replace(/[^-]/g, '').length > 3){
-        console.log(_anchors[i] + ' contains more than 3 hypens(' + loc.replace(/[^-]/g, '').length + ') and might look spammy.' );
+        console.log('Detected anchor with the following HREF attribute: ' + _anchors[i] + ' has more than 3 hypens(' + loc.replace(/[^-]/g, '').length + ') and might look spammy.' );
       }
 			
 			if( !_anchors[i].getAttribute('href') ){
@@ -122,8 +130,10 @@ window.onload = (function genie() {
 		nullHref > 1 ? label1='anchors' : label1='anchor';
 		missingHref > 1 ? label='anchors' : label='anchor';
 		
-		missingHref ? console.log('You have ' + missingHref + ' ' + label + ' with a missing href declaration.') : '';
-		nullHref ? console.log('You have ' + nullHref + ' ' + label1 + ' with an empty href.') : '';
+		missingHref ? console.log('Detected ' + missingHref + ' ' + label + ' with a missing href declaration.') : '';
+		nullHref ? console.log('Detected ' + nullHref + ' ' + label1 + ' with an empty href.') : '';
+		
+		j ? console.log('Detected ' + j + ' anchors which need a TITLE attribute.') : '';
   })();
   
  
@@ -143,6 +153,50 @@ window.onload = (function genie() {
   })();
   
   
+	
+// universal element check[in progress]
+	/*
+	function SS(type, elem, props){
+		var i = 0,
+				j = 0,
+				_scope,
+				_scopeLength = 0,
+				
+				messages = { 'undefined' : ' is undefined',
+									 
+									 };
+		
+		if( type === "id" ){
+			_scope = document.getElementById(elem);
+			_scopeLength = 1;
+		}else if( type === "class" ){
+			_scope = document.getElementsByClassName(elem);
+		}else if( type === "tag" ){
+			_scope = document.getElementsByTagName(elem);
+		}
+		
+		if( _scopeLength !== 1 ){ _scopeLength = _scope.length; }
+		
+		if( _scopeLength && _scopeLength > 1){
+			for(i; i<_scopeLength; i++){
+				// console.log(_scope[i]);
+				
+				for(j;j<props.length;j++){
+					//console.log(props[j]);
+					if( !_scope[i].getAttribute(props[j]) ){ 
+						console.log( props[j] + messages.undefined );
+					}
+					
+				}
+				
+			}
+		}
+		
+	};
+
+	
+	*/
+	
 	
 	
 })();
