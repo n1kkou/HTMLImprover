@@ -8,7 +8,6 @@ window.onload = (function genie() {
       _rootArguments = arguments;
 	
 	
-	
 // detect rows[exprimental stage]
 	(function countDocumentLength(context, element) {
 		var rows = 4, target = context.split('\n');
@@ -69,15 +68,12 @@ window.onload = (function genie() {
 //************************************ check images
   (function scanImages(){
     var _images = document.getElementsByTagName('img'),
-        i = j = k = l = 0,
-        elems = _images.length;
-    
+        badSeoImages = i = j = k = l = m = n = 0,
+				_keys,
+        elems = _images.length,
+				imageProps = {};
+		
     for(i; i<elems; i++){
-			var imgKeywords = [],
-					imgSrc = [],
-					x = 0,
-					y = 0,
-					matches = [];
       // check if images have ALT text
       if( !_images[i].getAttribute('alt') ){
 				j++;
@@ -93,24 +89,43 @@ window.onload = (function genie() {
 				l++;
       }
 			
-			if( _images[i].getAttribute('src') ){
-				imgSrc.push(_images[i].getAttribute('src').split('/'));
-			}
-			
-			if( _images[i].getAttribute('alt') ){
-				imgKeywords.push(_images[i].getAttribute('alt').split(' '));	
-			}
-		
-			if( imgSrc.length && imgKeywords.length ){
-				// check content matches
-			}
-			
     }
 		
 		k ? console.log('Detected ' + k + ' images which need an WIDTH value.'): '';
 		l ? console.log('Detected ' + l + ' images which need an HEIGHT value.'): '';
 		j ? console.log('Detected ' + j + ' images which need an ALT description.') : '';
     
+		
+		// src - alt compare
+		for(m; m<elems; m++){
+			var _this = _images[m];
+			
+			if( _this.getAttribute('src') && _this.getAttribute('alt') ){
+				imageProps[m] = { 
+					'src' : _this.getAttribute('src').split('/'),
+					'alt' : _this.getAttribute('alt').split(' ')
+				};
+			}
+		}
+		
+		// if( imageProps )
+		for(var _keys in imageProps){
+			var ln = imageProps[_keys]['alt'],
+					compare = imageProps[_keys]['src'],
+					_temp = 0;
+			for(n; n<ln.length; n++ ){
+				if( compare.indexOf(ln[n]) == -1 ){
+					_temp++;
+				}
+			}
+			if( _temp == ln.length ){ badSeoImages++; }
+		}
+		
+		console.log(imageProps);
+		
+		badSeoImages > 0 ? console.log("Detected " + badSeoImages + " images width SRC description not matching the image file name description.") : '';
+		
+		
   })();
   
   
