@@ -2,19 +2,20 @@
 // check charset definition
 
 window.onload = (function genie() {
+	console.time("Script execution time");
   
   var _head = document.querySelector('head'),
       _body = document.querySelector('body'),
       _rootArguments = arguments;
 	
-	
+	console.groupCollapsed("General");
 // detect rows[exprimental stage]
 	(function countDocumentLength(context, element) {
 		var rows = 4, target = context.split('\n');
 		for( var _key in target ){
 			rows+=1;
 		}
-		console.log('The document has ' + rows + ' rows.[experimental mode. If your document doesnt have an explicit doctype rule, you will get a +1 value for rows.]');
+		console.log('The document has ' + rows + ' rows. %cExperimental mode. If your document doesnt have an explicit doctype rule, you will get a +1 value for rows.', 'color:green;font-style:italic;');
 	})(document.documentElement.outerHTML, document.querySelector('a'));
   
 
@@ -36,9 +37,10 @@ window.onload = (function genie() {
     console.log('TITLE attribute could be longer'); 
   }
   
-	
+	console.groupEnd();
 	
 //********************************** head element - parsing and checking 
+	console.groupCollapsed("HTML Meta tags");
   (function scanMeta(){
     var i, j,
         meta = ['description', 'keywords'], // set what meta names to be checked
@@ -61,11 +63,13 @@ window.onload = (function genie() {
 			}
     }
   }());
+	console.groupEnd();
   
   
   
 //************************************ BODY
 //************************************ check images
+	console.groupCollapsed("Images");
   (function scanImages(){
     var _images = document.getElementsByTagName('img'),
         badSeoImages = i = j = k = l = m = n = 0,
@@ -121,15 +125,16 @@ window.onload = (function genie() {
 			if( _temp == ln.length ){ badSeoImages++; }
 		}
 		
-		console.log(imageProps);
-		
 		badSeoImages > 0 ? console.log("Detected " + badSeoImages + " images width SRC description not matching the image file name description.") : '';
 		
-		
+		console.log('All images that have both \'src\' and \'alt\' tags defined: ');
+		console.dir(imageProps);
   })();
+	console.groupEnd();
   
   
 //************************************ check anchors
+	console.groupCollapsed("Hyperlinks");
   (function scanAnchors(){
     var _anchors = document.getElementsByTagName('a'),
         i,
@@ -165,10 +170,11 @@ window.onload = (function genie() {
 		
 		j ? console.log('Detected ' + j + ' anchors which need a TITLE attribute.') : '';
   })();
-  
+  	console.groupEnd();
  
 	
 //************************************ detect schema.org usage
+	console.groupCollapsed("Microdata[schema.org]");
   (function scanMicroData(){
     var schema = document.querySelector('[itemscope]');
     if( schema ){
@@ -181,7 +187,7 @@ window.onload = (function genie() {
       console.log('You might use a microdata schema for your website. Choose one from www.schema.org');
     }
   })();
-  
+  console.groupEnd();
 	
 	
 	
@@ -230,5 +236,5 @@ window.onload = (function genie() {
 	*/
 	
 	
-	
+	console.timeEnd("Script execution time");
 })();
