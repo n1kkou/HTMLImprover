@@ -15,7 +15,7 @@ window.onload = (function genie() {
 		for( var _key in target ){
 			rows+=1;
 		}
-		console.log('The document has ' + rows + ' rows. %cExperimental mode. If your document doesnt have an explicit doctype rule, you will get a +1 value for rows.', 'color:green;font-style:italic;');
+		console.log('%cThe document has ' + rows + ' rows. Experimental mode. If your document doesnt have an explicit doctype rule, you will get a +1 value for rows.', 'color:white;background:green;font-family:verdana,sans-serif;font-size:11px;padding:5px;line-height:1.8em;');
 	})(document.documentElement.outerHTML, document.querySelector('a'));
   
 
@@ -55,7 +55,7 @@ window.onload = (function genie() {
     
     for(i=0; i<args; i++){
       if( metaSourceValues.indexOf(meta[i]) === -1 ){          
-        console.log('meta tag ' + meta[i].toUpperCase() + ' meta is not declared.');
+        console.log('meta tag ' + meta[i].toUpperCase() + ' is not declared.');
       }else{ 
 				if( !_head.querySelector('[name="' + meta[i] + '"]').getAttribute('content') ){
 					console.log('meta tag ' + meta[i].toUpperCase() + ' exists but has no content.');
@@ -83,6 +83,7 @@ window.onload = (function genie() {
 				j++;
       }
       
+			/*
       // check if images have inline WIDTH attribute
       if( !_images[i].getAttribute('width') ){
 				k++;
@@ -92,6 +93,7 @@ window.onload = (function genie() {
       if( !_images[i].getAttribute('height') ){
 				l++;
       }
+			*/
 			
     }
 		
@@ -139,6 +141,8 @@ window.onload = (function genie() {
     var _anchors = document.getElementsByTagName('a'),
         i,
 				j = 0,
+				k = 0,
+				k1 = [],
         elems = _anchors.length,
         hyp = [],
 				missingHref = 0,
@@ -148,6 +152,14 @@ window.onload = (function genie() {
     
     for(i=0; i<elems; i++){
       var loc = _anchors[i].getAttribute('href') || 'nohref';
+			
+			if( (loc.length > 1) && (loc[0] == '#') ){
+				if( !document.querySelector(loc) ){
+					k++;
+					k1.push(loc);
+				}
+			}
+			
       if( !_anchors[i].getAttribute('title') ){
 				j++;
       }
@@ -169,6 +181,7 @@ window.onload = (function genie() {
 		nullHref ? console.log('Detected ' + nullHref + ' ' + label1 + ' with an empty href.') : '';
 		
 		j ? console.log('Detected ' + j + ' anchors which need a TITLE attribute.') : '';
+		k ? console.log('Detected ' + k + ' anchors which target elements in the same page but don\'t have targeted elements. The following targeted elements were not found: ' + k1) : '';
   })();
   	console.groupEnd();
  
