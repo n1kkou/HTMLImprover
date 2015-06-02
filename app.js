@@ -149,6 +149,8 @@ window.onload = (function genie() {
 				nullHref = 0,
 				label = '',
 				label1 = '';
+				
+		if( !_anchors.length ){ console.log("No anchors detected") }; 
     
     for(i=0; i<elems; i++){
       var loc = _anchors[i].getAttribute('href') || 'nohref';
