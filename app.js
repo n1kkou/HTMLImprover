@@ -1,39 +1,145 @@
-// rows length and troubleshooting by rows
 // check charset definition
+// DOM analyzer v1.1
+// functional programming related
 
-window.onload = (function genie() {
+
+// Console.group helper
+function group(groupName, logType, message){
+    
+    console.groupCollapsed(groupName);
+    console[logType](message);
+    console.groupEnd();
+}
+
+// Scan script files and return the number of script element found
+function getScriptFiles(_src){
+
+    var headHasScripts = false,
+        warnUser;
+    
+    if(document.head.getElementsByTagName('script').length){
+        headHasScripts = true;
+    }
+    
+    warnUser = headHasScripts ? 'Consider moving script files from document\'s head (' + document.head.getElementsByTagName('script').length + ' script files) to the end of the document.' : '';
+        
+    return 'Your document contains ' + _src.getElementsByTagName('script').length + ' script files. ' + warnUser;
+}
+
+// Scan DOM nodes and return the entire array collection
+function getDOMnodes(_src){
+
+    return _src.childNodes;
+}
+
+// Read document rows length
+function getDOMlines(_src) {
+        
+    var rows = 4,
+        target = _src.split('\n');
+
+    for( var _key in target ){
+        rows+=1;
+    }
+    
+    return 'Experimental mode. The document has ' + rows + ' rows.';
+};
+
+// Check if a charset meta tag was defined
+function getCharset(){
+    var metas = document.head.getElementsByTagName('meta'),
+        charsetDetected = false,
+        charsetValue;
+    
+    for(var i = 0; i<metas.length; i++){
+        if(metas[i].getAttribute('charset') && metas[i].getAttribute('charset').length > 1){
+            charsetDetected = true;
+            charsetValue = metas[i].getAttribute('charset');
+        }
+    }    
+    
+    return charsetDetected ? 'Your document has a charset value set to: ' + charsetValue : 'No charset meta has been set!';
+}
+
+// Check document language
+function getLanguage(){
+    
+    return document.documentElement.getAttribute('lang') ? '' : 'You should specify a lang attribute for your document content. e.g. <html lang="en-US">'; 
+}
+
+// Microdata[schema.org]
+function scanMicroData(){
+    
+    var 
+        schema = document.querySelector('[itemscope]'),
+        schemaType,
+        schemaMessage;
+    
+    if( schema ){
+        
+        if ( schema.getAttribute('itemtype') ){
+
+            schemaType = true;
+            schemaMessage = 'Congrats! You have at least one microdata schema.';
+
+        }else{
+
+            schemaType = false;
+            schemaMessage = 'You microdata schema is not valid. You need to specify an \"itemtype\" for your schema.';
+        }
+    }else{
+        
+        schemaMessage = 'You might use a microdata schema for your website to describe the website content. Choose one from www.schema.org';
+      
+    }
+    
+    return schemaMessage;
+};
+
+
+// init all helpers
+window.onload = (function() {
+    
 	console.time("Script execution time");
   
-  var _head = document.querySelector('head'),
-      _body = document.querySelector('body'),
-      _rootArguments = arguments;
-	
-	console.groupCollapsed("General");
-// detect rows[exprimental stage]
-	(function countDocumentLength(context, element) {
-		var rows = 4, target = context.split('\n');
-		for( var _key in target ){
-			rows+=1;
-		}
-		console.log('%cThe document has ' + rows + ' rows. Experimental mode. If your document doesnt have an explicit doctype rule, you will get a +1 value for rows.', 'color:white;background:green;font-family:verdana,sans-serif;font-size:11px;padding:5px;line-height:1.8em;');
-	})(document.documentElement.outerHTML, document.querySelector('a'));
-  
+    var
+        _head = document.head,
+        _body = document.body,
+        _rootArguments = arguments;
+    
+    // Display meta Charset info
+    group('Document Charset', 'info', getCharset());
 
-// check if the current document has a lang defined
-	if( !document.documentElement.getAttribute('lang') ){ console.log('You should specify a lang attribute for your document content. e.g. <html lang="en">'); }
-	
-	
+	// Display General info about the document
+    group('Document lines', 'info', getDOMlines(document.documentElement.outerHTML));
+  
+    // Check if the current document has a lang defined
+    group('Document Language', 'info', getLanguage());
+
+	// Script files
+    group('Document Script files', 'info', getScriptFiles(document));
+    
+    // Schema microformat
+    group('Microdata - Schema.org', 'info', scanMicroData());
+
+    
+    
+    // to refactor
 //************************************ HEAD	
 //********************************** check for head and body elements, throw a warning if they are unset
   if( !_head ){ 
     console.log('No HEAD element detected'); 
   }
+
   if( !_body ){ 
     console.log('No BODY element detected'); 
   }
+
   if( !_head.querySelector('title') ){ 
+      
     console.log('No TITLE attribute detected'); 
   }else if( _head.querySelector('title').innerText.length < 3 ){
+      
     console.log('TITLE attribute could be longer'); 
   }
   
@@ -188,68 +294,8 @@ window.onload = (function genie() {
   	console.groupEnd();
  
 	
-//************************************ detect schema.org usage
-	console.groupCollapsed("Microdata[schema.org]");
-  (function scanMicroData(){
-    var schema = document.querySelector('[itemscope]');
-    if( schema ){
-      if ( schema.getAttribute('itemtype') ){
-      	console.log('Congrats! You have at least one microdata schema.');
-      }else{
-				console.log('You microdata schema is not valid. You need to specify an \"itemtype\" for your schema.');
-			}
-    }else{
-      console.log('You might use a microdata schema for your website. Choose one from www.schema.org');
-    }
-  })();
-  console.groupEnd();
-	
-	
-	
-	
-// universal element check[in progress]
-	/*
-	function SS(type, elem, props){
-		var i = 0,
-				j = 0,
-				_scope,
-				_scopeLength = 0,
-				
-				messages = { 'undefined' : ' is undefined',
-									 
-									 };
-		
-		if( type === "id" ){
-			_scope = document.getElementById(elem);
-			_scopeLength = 1;
-		}else if( type === "class" ){
-			_scope = document.getElementsByClassName(elem);
-		}else if( type === "tag" ){
-			_scope = document.getElementsByTagName(elem);
-		}
-		
-		if( _scopeLength !== 1 ){ _scopeLength = _scope.length; }
-		
-		if( _scopeLength && _scopeLength > 1){
-			for(i; i<_scopeLength; i++){
-				// console.log(_scope[i]);
-				
-				for(j;j<props.length;j++){
-					//console.log(props[j]);
-					if( !_scope[i].getAttribute(props[j]) ){ 
-						console.log( props[j] + messages.undefined );
-					}
-					
-				}
-				
-			}
-		}
-		
-	};
+// end of to refactor code
+    
 
-	
-	*/
-	
-	
 	console.timeEnd("Script execution time");
 })();
