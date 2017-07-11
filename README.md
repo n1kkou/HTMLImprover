@@ -1,5 +1,5 @@
 # HTMLImprover  
-v1.0.1     
+  
 [![Inline docs](http://inch-ci.org/github/n1kkou/HTMLImpover.svg?branch=master&style=flat-square)](http://inch-ci.org/github/n1kkou/HTMLImpover)
 
 Markup Improver<br>
