@@ -1,6 +1,6 @@
 # HTMLImprover  
-v1.2     
+v1.0.1     
 [![Inline docs](http://inch-ci.org/github/n1kkou/HTMLImpover.svg?branch=master&style=flat-square)](http://inch-ci.org/github/n1kkou/HTMLImpover)
 
 Markup Improver<br>
-Include the app.js file in your document and read the console hints to improve your page mark-up.
+Include the htmlimprover.js file in your document and read the console hints to improve your page mark-up.
