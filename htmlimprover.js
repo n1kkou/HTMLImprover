@@ -1,4 +1,4 @@
-function HTMLImprover(){
+function HTMLImprover() {
 	"use strict";
 	
 	/**
@@ -164,16 +164,12 @@ function HTMLImprover(){
 		}
 	}
 	
-	console.log("asd");
-	
-	return {
-		'totalScripts': getTotalScripts,
-		'totalStylesheets': getTotalStylesheets,
-		'documentLanguage': getLanguage,
-		'documentCharset': getCharset,
-		'scriptsInHead': scriptTagsInHead,
-		'stylesInline': getInlineStyles
-	};
+	getTotalScripts();
+	getTotalStylesheets();
+	getLanguage();
+	getCharset();
+	scriptTagsInHead();
+	getInlineStyles();
 }
 
-exports.HTMLImprover = HTMLImprover;
+HTMLImprover();

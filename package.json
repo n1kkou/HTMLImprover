@@ -1,8 +1,7 @@
 {
   "name": "htmlimprover",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "HTML markup improver",
-  "main": "htmlimprover.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/n1kkou/HTMLImprover.git"
