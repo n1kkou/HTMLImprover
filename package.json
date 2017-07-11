@@ -1,0 +1,28 @@
+{
+  "name": "htmlimprover",
+  "version": "1.0.1",
+  "description": "HTML markup improver",
+  "main": "htmlimprover.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/n1kkou/HTMLImprover.git"
+  },
+  "keywords": [
+    "html",
+    "seo",
+    "markup",
+    "javascript",
+    "code",
+    "quality"
+  ],
+   "author": {
+    "name": "Lucian Andrei",
+    "email": "lucian.devel@gmail.com",
+    "url": "http://andreilazar.com/"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/n1kkou/HTMLImprover/issues"
+  },
+  "homepage": "https://github.com/n1kkou/HTMLImprover#readme"
+}
