@@ -1,6 +1,6 @@
 function HTMLImprover () {
 	"use strict";
-	
+
 	/**
 	 * DOM analyzer
 	 * <p>JavaScript scanner to improve document markup.</p>
@@ -41,6 +41,24 @@ function HTMLImprover () {
 		return _container.getElementsByTagName(name);
 	}
 
+	function getAttributes (elementSelector) {
+		var attrs = elementSelector.attributes,
+			attrsLength = attrs.length,
+			j,
+			result = [];
+
+		for (j = 0; j < attrsLength; j++) {
+			var attrObject = attrs[j],
+				newObj = {};
+
+			newObj[attrObject.name] = attrObject.value;
+
+			result.push(newObj);
+		}
+
+		return JSON.stringify(result);
+	}
+
 	/**
 	 * Get elements by class name and return the collection.
 	 *
@@ -52,6 +70,7 @@ function HTMLImprover () {
 		var _container = container || _doc;
 		return _container.getElementsByClassName(className);
 	}
+
 	/**
 	 * Warn about scripts placed in the HEAD section of the document
 	 */
@@ -80,7 +99,7 @@ function HTMLImprover () {
 		}
 
 		if (!charsetDetected) {
-			
+
 			console.warn('META - Charset: No charset meta has been set!');
 		}
 	}
@@ -112,7 +131,7 @@ function HTMLImprover () {
 		var docStylesheets = getAllSelectorsLength('[rel=stylesheet]');
 
 		if (docStylesheets) {
-			
+
 			console.info('Your document has a total of ' + docStylesheets + ' external stylesheets references.');
 		}
 	}
@@ -124,21 +143,45 @@ function HTMLImprover () {
 			i,
 			bodyElementsLength = bodyElements.length,
 			inlineInBody = _inlineInBody || 0;
-		
+
 		for (i = 0; i < bodyElementsLength; i++) {
 			var _item = bodyElements[i];
-			
+
 			if (_item.getAttribute('style')) {
 				++inlineInBody;
 			}
 		}
-		
+
 		if (inlineInHead > 1) {
 			console.warn('You have ' + inlineInHead + ' inline styles in the document HEAD section. Consider moving them into an external stylesheet.');
 		}
-		
+
 		if (inlineInBody) {
 			console.warn('You have ' + inlineInBody + ' inline styles in the document BODY section. Consider moving them into an external stylesheet.');
+		}
+	}
+
+	function checkAnchors () {
+		var anchors = getAllByTag('a'),
+			anchorsLength = anchors.length,
+			i;
+
+		for (i = 0; i < anchorsLength; i++) {
+
+			var anchorHref = anchors[i].getAttribute('href');
+
+			if (!anchorHref || anchorHref.length < 1) {
+				console.warn('Elements A: The following link is missing or has an invalid href value: ', anchors[i]);
+			}
+
+			if ((anchorHref.length > 1) && (anchorHref.substr(0, 1) === '#')) {
+				var referencedElement = document.getElementById(anchorHref.substr(1));
+
+				if (!referencedElement) {
+					console.warn('Elements A: The following link is referencing a missing HTML element. Missing HTML element: ', anchorHref, anchors[i]);
+				}
+			}
+
 		}
 	}
 
@@ -155,6 +198,7 @@ function HTMLImprover () {
 	getCharset();
 	scriptTagsInHead();
 	getInlineStyles();
+	checkAnchors();
 }
 
 HTMLImprover();
