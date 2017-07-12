@@ -21,26 +21,60 @@ function HTMLImprover () {
 	/**
 	 * Helper functions
 	 */
+
+	/**
+	 * Returns a counter of total elements found by TAG name
+	 *
+	 * @param {String} type
+	 * @param src
+	 * @returns {number}
+	 */
 	function tagTotal (type, src) {
 		var _src = src || _doc;
 		return _src.getElementsByTagName(type).length;
 	}
 
+	/**
+	 * Returns a counter of total elements found by custom attribute/tag/class name
+	 *
+	 * @param {String} type
+	 * @param src
+	 * @returns {number}
+	 */
 	function getAllSelectorsLength (type, src) {
 		var _src = src || _doc;
 		return _src.querySelectorAll(type).length;
 	}
 
+	/**
+	 * Returns a collection of all elements found by custom attribute/tag/class name
+	 *
+	 * @param {String} type
+	 * @param src
+	 * @returns {NodeList}
+	 */
 	function getAllBySelector (type, src) {
 		var _src = src || _doc;
 		return _src.querySelectorAll(type);
 	}
 
+	/**
+	 * Returns a collection of all elements found by tag name
+	 *
+	 * @param {String} name
+	 * @param container
+	 * @returns {NodeList}
+	 */
 	function getAllByTag (name, container) {
 		var _container = container || _doc;
 		return _container.getElementsByTagName(name);
 	}
 
+	/**
+	 * Returns a JSON stringify collection of all element' attributes.
+	 *
+	 * @param {Element} elementSelector
+	 */
 	function getAttributes (elementSelector) {
 		var attrs = elementSelector.attributes,
 			attrsLength = attrs.length,
@@ -84,7 +118,7 @@ function HTMLImprover () {
 	}
 
 	/**
-	 * Warn if a <b>charset</b> meta tag was not defined
+	 * Warns if a <b>charset</b> meta tag was not defined
 	 */
 	function getCharset () {
 		var metas = tagTotal('meta', _head),
@@ -136,6 +170,9 @@ function HTMLImprover () {
 		}
 	}
 
+	/**
+	 * Warns about inline styles used in HEAD and BODY sections.
+	 */
 	function getInlineStyles () {
 		var inlineInHead = tagTotal('style', _head),
 			_inlineInBody = tagTotal('style', _body),
@@ -161,6 +198,9 @@ function HTMLImprover () {
 		}
 	}
 
+	/**
+	 * Warns about anchors with a missing/wrong HREF attribute or missing referenced fragments.
+	 */
 	function checkAnchors () {
 		var anchors = getAllByTag('a'),
 			anchorsLength = anchors.length,
