@@ -9,7 +9,6 @@ Include the htmlimprover.js file in your document and read the console hints to 
 
 - Logs total external Stylesheets
 - Logs total external Javascript files
-
 - Warns about inline styles
 - Warns about missing document language
 - Warns about missing document charset meta
