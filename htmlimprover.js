@@ -18,6 +18,9 @@ function HTMLImprover () {
 		_head = _doc.head,
 		_body = _doc.body;
 
+	var elems = getAllBySelector('*', _doc);
+	// cached all elements for later queries when verifying deprecated tags/attributes.
+
 	/**
 	 * Helper functions
 	 */
@@ -226,6 +229,202 @@ function HTMLImprover () {
 	}
 
 	/**
+	 * Find deprecated tags (if document type is HTML5)
+	 *
+	 */
+	function findDeprecatedTags () {
+		var _deprecatedTags = ['acronym', 'applet', 'basefont', 'big', 'center', 'dir', 'font', 'frame', 'frameset', 'isindex', 'noframes', 's', 'strike', 'tt'],
+			i,
+			elemsLen = elems.length;
+
+		for (i = 0; i < elemsLen; i++) {
+			var _deprecatedElement = elems[i].nodeName.toLowerCase();
+			if (_deprecatedTags.indexOf(_deprecatedElement) !== -1) {
+				console.warn('Deprecated HTML tag found: <' + _deprecatedElement + '/>');
+			}
+		}
+	}
+
+	/**
+	 * Find deprecated attributes (if document type is HTML5)
+	 *
+	 */
+	function findDeprecatedAttributes () {
+		var _deprecatedAttributes = [
+				{
+					'rev': ['link', 'a']
+				},
+				{
+					'charset': ['link', 'a']
+				},
+				{
+					'shape': ['a']
+				},
+				{
+					'coords': ['a']
+				},
+				{
+					'longdesc': ['img', 'iframe']
+				},
+				{
+					'target': ['link']
+				},
+				{
+					'nohref': ['area']
+				},
+				{
+					'profile': ['head']
+				},
+				{
+					'version': ['html']
+				},
+				{
+					'name': ['img']
+				},
+				{
+					'scheme': ['meta']
+				},
+				{
+					'archive': ['object']
+				},
+				{
+					'classid': ['object']
+				},
+				{
+					'codebase': ['object']
+				},
+				{
+					'codetype': ['object']
+				},
+				{
+					'declare': ['object']
+				},
+				{
+					'standby': ['object']
+				},
+				{
+					'valuetype': ['param']
+				},
+				{
+					'axis': ['td']
+				},
+				{
+					'abbr': ['td']
+				},
+				{
+					'scope': ['td']
+				},
+				{
+					'align': ['caption', 'iframe', 'img', 'input', 'object', 'legend', 'table', 'hr', 'div', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'col', 'colgroup', 'tbody', 'td', 'tfoot', 'th', 'thead', 'tr']
+				},
+				{
+					'alink': ['body']
+				},
+				{
+					'link': ['body']
+				},
+				{
+					'vlink': ['body']
+				},
+				{
+					'text': ['body']
+				},
+				{
+					'background': ['body']
+				},
+				{
+					'bgcolor': ['table', 'tr', 'td', 'th', 'body']
+				},
+				{
+					'border': ['table', 'object']
+				},
+				{
+					'cellpadding': ['table']
+				},
+				{
+					'cellspacing': ['table']
+				},
+				{
+					'char': ['col', 'colgroup', 'tbody', 'td', 'tfoot', 'th', 'thead', 'tr']
+				},
+				{
+					'charoff': ['col', 'colgroup', 'tbody', 'td', 'tfoot', 'th', 'thead', 'tr']
+				},
+				{
+					'clear': ['br']
+				},
+				{
+					'compact': ['dl', 'menu', 'ol', 'ul']
+				},
+				{
+					'frame': ['table']
+				},
+				{
+					'frameborder': ['iframe']
+				},
+				{
+					'hspace': ['img', 'object']
+				},
+				{
+					'vspace': ['img', 'object']
+				},
+				{
+					'marginheight': ['iframe']
+				},
+				{
+					'marginwidth': ['iframe']
+				},
+				{
+					'noshade': ['hr']
+				},
+				{
+					'nowrap': ['td', 'th']
+				},
+				{
+					'rules': ['table']
+				},
+				{
+					'scrolling': ['iframe']
+				},
+				{
+					'size': ['hr']
+				},
+				{
+					'type': ['li', 'ol', 'ul', 'param']
+				},
+				{
+					'valign': ['col', 'colgroup', 'tbody', 'td', 'tfoot', 'th', 'thead', 'tr']
+				},
+				{
+					'width': ['hr', 'table', 'td', 'th', 'col', 'colgroup', 'pre']
+				}
+			],
+			i,
+			j,
+			k,
+			elemsLen = elems.length;
+
+		for (i = 0; i < elemsLen; i++) {
+			var _element = elems[i].nodeName.toLowerCase().toString();
+			var _attributes = JSON.parse(getAttributes(elems[i]));
+			var _attributesLength = _attributes.length;
+			var _deprecatedKeysLength = _deprecatedAttributes.length;
+
+			for (j = 0; j < _attributesLength; j++) {
+				var attrKey = Object.keys(_attributes[j])[0].toString();
+
+				for (k = 0; k < _deprecatedKeysLength; k++) {
+					var _temp = Object.keys(_deprecatedAttributes[k])[0].toString();
+
+					if ((attrKey === _temp) && (_deprecatedAttributes[k][_temp].indexOf(_element) !== -1)) {
+						console.warn('Deprecated HTML attribute [' + attrKey + '] found on the: <' + _element + '/> element');
+					}
+				}
+			}
+		}
+	}
+
+	/**
 	 * Info
 	 */
 	getTotalScripts();
@@ -239,6 +438,16 @@ function HTMLImprover () {
 	scriptTagsInHead();
 	getInlineStyles();
 	checkAnchors();
+
+	/**
+	 * If the document ype is html5, run the deprecation checks
+	 * Important note: the doctype check is working in browsers starting from IE9+
+	 */
+	if (new XMLSerializer().serializeToString(document.doctype).toLowerCase() === '<!doctype html>') {
+		findDeprecatedTags();
+		findDeprecatedAttributes();
+	}
+
 }
 
 HTMLImprover();
