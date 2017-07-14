@@ -14,7 +14,8 @@ This tool tries to improve HTML markup and usage. Also gives you some statistics
 - Warns about missing document language
 - Warns about missing document charset meta
 - Warns about missing or referencing wrong HTML elements from 'href' attributes of anchors
-- Wrans about Javascript code in document HEAD sections
+- Warns about Javascript code in document HEAD sections
+- Warns about deprecated tags and attributes in HTML5 document type
 
 
 ### Usage:  
