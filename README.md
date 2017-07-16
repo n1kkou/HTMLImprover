@@ -1,6 +1,4 @@
 # HTMLImprover  
-  
-[![Inline docs](http://inch-ci.org/github/n1kkou/HTMLImpover.svg?branch=master&style=flat-square)](http://inch-ci.org/github/n1kkou/HTMLImpover)
 
 Markup Improver<br>
 This tool tries to improve HTML markup and usage. Also gives you some statistics about external stylesheets and scripts references.
