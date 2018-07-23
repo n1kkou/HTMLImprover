@@ -114,7 +114,7 @@ exports.ScanHTML = function ScanHTML () {
      * Warns if a <b>charset</b> meta tag was not defined
      */
     function getCharset () {
-        var metas = tagTotal('meta', _head),
+        var metas = document.head.getElementsByTagName('meta'),
             charsetDetected = false;
 
         for (var i = 0; i < metas.length; i++) {
