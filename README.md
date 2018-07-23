@@ -19,7 +19,7 @@ This tool tries to improve HTML markup and usage. Also gives you some statistics
 ### Usage:  
 Include the module and initialize it wherever you want to get hints about the HTML markup.
 ```js
-const HTMLImprover = require('htmlimprover');
+import * as HTMLImprover from 'htmlimprover';
 
-HTMLImprover.init();
+HTMLImprover.ScanHTML();
 ```

@@ -1,4 +1,4 @@
-exports.init = function init () {
+exports.ScanHTML = function ScanHTML () {
     "use strict";
 
     /**
