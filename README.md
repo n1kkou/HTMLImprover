@@ -17,4 +17,9 @@ This tool tries to improve HTML markup and usage. Also gives you some statistics
 
 
 ### Usage:  
-Include the htmlimprover.js file in your document and read the console hints to improve your page mark-up.
+Include the module and initialize it wherever you want to get hints about the HTML markup.
+```js
+const HTMLImprover = require('htmlimprover');
+
+HTMLImprover.init();
+```
