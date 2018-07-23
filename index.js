@@ -1,6 +1,4 @@
-module.exports = init;
-
-function init () {
+exports.init = function init () {
     "use strict";
 
     /**
@@ -439,5 +437,4 @@ function init () {
         findDeprecatedTags();
         findDeprecatedAttributes();
     }
-
 }
