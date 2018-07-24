@@ -17,7 +17,7 @@ This tool tries to improve HTML markup and usage. Also gives you some statistics
 
 
 ### Usage:
-npm
+Install from npm
 ```js
 npm i htmlimprover
 ```
