@@ -16,7 +16,11 @@ This tool tries to improve HTML markup and usage. Also gives you some statistics
 - Warns about deprecated tags and attributes in HTML5 document type
 
 
-### Usage:  
+### Usage:
+npm
+```js
+npm i htmlimprover
+```
 Include the module and initialize it wherever you want to get hints about the HTML markup.
 ```js
 import * as HTMLImprover from 'htmlimprover';
