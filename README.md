@@ -27,3 +27,6 @@ import * as HTMLImprover from 'htmlimprover';
 
 HTMLImprover.ScanHTML();
 ```
+### Vanilla version
+For apps that aren't using Node modules, there is also a vanilla version.
+Include the script at the end of your document and call the *ScanHTML* function:
