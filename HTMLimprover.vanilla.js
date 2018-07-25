@@ -1,4 +1,4 @@
-exports.ScanHTML = function ScanHTML () {
+function ScanHTML () {
     "use strict";
 
     /**
@@ -433,12 +433,8 @@ exports.ScanHTML = function ScanHTML () {
      * If the document ype is html5, run the deprecation checks
      * Important note: the doctype check is working in browsers starting from IE9+
      */
-	if (document.doctype){
-		if(new XMLSerializer().serializeToString(document.doctype).toLowerCase() === '<!doctype html>') {
-			findDeprecatedTags();
-			findDeprecatedAttributes();
-		}
-	}else{
-		console.warn("DOCTYPE: No document type was defined!");
-	}
+    if (new XMLSerializer().serializeToString(document.doctype).toLowerCase() === '<!doctype html>') {
+        findDeprecatedTags();
+        findDeprecatedAttributes();
+    }
 }
